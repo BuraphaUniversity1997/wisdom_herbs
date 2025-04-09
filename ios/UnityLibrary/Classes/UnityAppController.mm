@@ -33,8 +33,6 @@
 #include <unistd.h>
 #include <sys/sysctl.h>
 
-// Edited by https://github.com/juicycleff/flutter-unity-view-widget
-
 // we assume that app delegate is never changed and we can cache it, instead of re-query UIApplication every time
 UnityAppController* _UnityAppController = nil;
 UnityAppController* GetAppController()
@@ -152,8 +150,6 @@ NSInteger _forceInterfaceOrientationMask = 0;
 
     InitUnityReplayKit();
 #endif
-    // Modified by https://github.com/juicycleff/flutter-unity-view-widget
-    [[NSNotificationCenter defaultCenter] postNotificationName: @"UnityReady" object:self];
 }
 
 extern "C" void UnityDestroyDisplayLink()
@@ -589,21 +585,6 @@ extern "C" void UnityCleanupTrampoline()
     AppController_SendNotificationWithArg(kUnityHandleEventsForBackgroundURLSession, arg);
 }
 
-
-// Added by https://github.com/juicycleff/flutter-unity-view-widget
-extern "C" void OnUnityMessage(const char* message)
-{
-    if (GetAppController().unityMessageHandler) {
-        GetAppController().unityMessageHandler(message);
-    }
-}
-
-extern "C" void OnUnitySceneLoaded(const char* name, const int* buildIndex, const bool* isLoaded, const bool* IsValid)
-{
-    if (GetAppController().unitySceneLoadedHandler) {
-        GetAppController().unitySceneLoadedHandler(name, buildIndex, isLoaded, IsValid);
-    }
-}
 @end
 
 
